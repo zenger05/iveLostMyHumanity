@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
@@ -19,6 +20,7 @@ public class UsersDetailService implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isEmpty()) {
@@ -30,8 +32,5 @@ public class UsersDetailService implements UserDetailsService {
         }
     }
 
-//    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-//        return roles.stream().map(r->new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-//    }
 
 }

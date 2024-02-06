@@ -32,7 +32,7 @@ public class AdminController {
     public String indexView(Model model) {
         List<User> listUser = userService.findAll();
         model.addAttribute("users", listUser);
-        return "index";
+        return "indexSpringMvc";
     }
 
     @GetMapping("/addUser")

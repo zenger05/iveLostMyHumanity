@@ -24,12 +24,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> findAll() {
         return userRepository.findAll();
     }
