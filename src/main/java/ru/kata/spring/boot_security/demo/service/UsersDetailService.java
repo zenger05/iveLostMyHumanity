@@ -1,0 +1,37 @@
+package ru.kata.spring.boot_security.demo.service;
+
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
+
+import java.util.Optional;
+
+@Service
+public class UsersDetailService implements UserDetailsService {
+    private UserRepository userRepository;
+
+    public UsersDetailService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isEmpty()) {
+            throw new UsernameNotFoundException("User with name " + username + " not found");
+        } else{
+            User user = userOptional.get();
+            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                    user.getRoles());
+        }
+    }
+
+//    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+//        return roles.stream().map(r->new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+//    }
+
+}
