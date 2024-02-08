@@ -40,4 +40,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
+    public void update(Long id, User user) {
+        user.setId(id);
+        userRepository.save(user);
+    }
+
 }
