@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,23 +44,33 @@ public class AdminController {
         return userService.findAll();
     }
 
-    @GetMapping("/addUser")
+    @PostMapping("/addUser")
     public ResponseEntity<HttpStatus> addUserView(@RequestBody @Valid User user, BindingResult bindingResult) {
         userService.save(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/addOrUpdate/{id}")
+    @PutMapping("/addOrUpdate/{id}")
     public ResponseEntity<HttpStatus> add(@PathVariable("id") Long id, @RequestBody @Valid User user, BindingResult bindingResult) {
         user.setId(id);
         userRepository.save(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/removeUser/{id}")
+    @DeleteMapping("/removeUser/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable("id") Long id) {
+        return userService.findById(id).get();
+    }
+
+    @GetMapping("/roles")
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 
 

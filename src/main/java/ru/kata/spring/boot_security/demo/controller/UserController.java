@@ -1,15 +1,14 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.security.Principal;
 
-@Controller
+@RestController
 public class UserController {
     private final UserRepository userRepository;
 
@@ -17,11 +16,9 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/user")
-    public String userInfo(Model model, Principal principal) {
-        String username = principal.getName();
-        User user = userRepository.findByUsername(username).get();
-        model.addAttribute("user", user);
-        return "user";
+    @GetMapping("/api/user")
+    public User userInfo(Principal principal) {
+        User user = userRepository.findByUsername(principal.getName()).get();
+        return user;
     }
 }
